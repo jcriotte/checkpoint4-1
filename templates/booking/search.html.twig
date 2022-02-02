@@ -73,7 +73,7 @@
 				<div class="arrow down w-4 h-4"></div>
 			</div>
 
-			<div class="slots flex flex-wrap mb-4 hidden">
+			<div class="self-start slots flex flex-wrap mb-4 hidden">
 				{% for hour, array in court.slots %}
 					{% if array.booked == false %}
 						<div class="slot-hour hour-non-selected font-sans font-bold w-20 py-2 rounded text-xs text-center mr-2 mb-2 cursor-pointer" data-value="{{ court.info.id }}-{{ hour }}">{{ hour }}:00</div>

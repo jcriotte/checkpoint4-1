@@ -146,7 +146,8 @@ class BookingController extends AbstractController
 
         $entityManager->flush();
 
-        $this->addFlash('green', "Votre réservation du $day/$month/$yearStr pour le $courtName est confirmée");
+        $this->addFlash('green', "Votre réservation du $day/$month/$yearStr à $hour"
+            . "h00 pour le $courtName est confirmée");
 
         return $this->redirectToRoute('profile');
     }

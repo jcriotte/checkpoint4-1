@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
-use App\Repository\BookingRepository;
+use DateTime;
+use Exception;
+use App\Entity\User;
+use App\Entity\Booking;
 use App\Service\BookingInterface;
 use App\Service\CalendarInterface;
-use Exception;
+use App\Repository\CourtRepository;
+use App\Repository\BookingRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +29,14 @@ class BookingController extends AbstractController
         CalendarInterface $calendarInterface,
         BookingInterface $bookingInterface
     ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            throw new Exception('User not authenticated');
+        }
+
         $params = [];
 
         if ($request->getMethod() === 'POST') {
@@ -66,5 +79,75 @@ class BookingController extends AbstractController
 
 
         return $this->render('booking/search.html.twig', $params);
+    }
+
+    /**
+     * @Route("/new", name="new", methods={"POST"})
+     */
+    public function create(
+        Request $request,
+        CourtRepository $courtRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            throw new Exception('User not authenticated');
+        }
+
+        $yearStr =  $request->get('year');
+        if (!is_string($yearStr)) {
+            throw new Exception('Date is not in string format');
+        }
+
+        $monthStr =  $request->get('month');
+        if (!is_string($monthStr)) {
+            throw new Exception('Date is not in string format');
+        }
+
+        $dayStr =  $request->get('day');
+        if (!is_string($dayStr)) {
+            throw new Exception('Date is not in string format');
+        }
+
+        $courtStr =  $request->get('court');
+        if (!is_string($dayStr)) {
+            throw new Exception('Court is not in string format');
+        }
+
+        $hourStr =  $request->get('hour');
+        if (!is_string($dayStr)) {
+            throw new Exception('Hour is not in string format');
+        }
+
+        $month = sprintf("%02d", $monthStr);
+        $day = sprintf("%02d", $dayStr);
+        $court = (int) $courtStr;
+        $hour = (int) $hourStr;
+
+        $court = $courtRepository->findOneBy(['id' => $court]);
+        if (null === $court) {
+            throw new Exception('Court is not defined');
+        }
+
+        $courtName = $court->getName();
+        $dateTime = new DateTime("$yearStr-$month-$day");
+
+        $booking = new Booking();
+
+        $booking->setUser($user);
+        $booking->setCourt($court);
+        $booking->setHour($hour);
+        $booking->setDate($dateTime);
+
+        $entityManager->persist($booking);
+
+        $entityManager->flush();
+
+        $this->addFlash('green', "Votre réservation du $day/$month/$yearStr pour le $courtName est confirmée");
+
+        return $this->redirectToRoute('profile');
     }
 }

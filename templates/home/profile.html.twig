@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-	<div class="relative w-full mx-auto max-w-2xl mt-16">
+	<div class="relative w-full mx-auto max-w-3xl mt-16">
 		<div class="flex justify-between items-center">
 			<h2 class="text-3xl font-bold text-indigo-700 bg-indigo-100 rounded pt-2.5 pr-4 leading-none overflow-ellipsis overflow-hidden">{{ user.pseudo }}</h2>
 
@@ -17,14 +17,21 @@
 
 		{% for messages in app.flashes %}
 			{% for message in messages %}
-				<span class="absolute left-0 left-0 flash mt-5 text-green-700 text-sm block inline-flex justify-center rounded-md border border-green-200 shadow-sm px-3 py-1.5 bg-green-100">
+				<span class="absolute top-24 left-0 flash mt-5 text-green-700 text-sm block inline-flex justify-center rounded-md border border-green-200 shadow-sm px-3 py-1.5 bg-green-100">
 					{{ message }}
 				</span>
 			{% endfor %}
 		{% endfor %}
 
+		<div class="sm:flex sm:flex-row-reverse sm:justify-between mt-16 mb-20">
+			<div class="my-5">
+				<a href="{{ path('booking_search') }}" class="font-mono font-bold block sm:inline-flex text-center justify-center border border-yellow-300 shadow-sm px-12 py-2.5 bg-yellow-500 text-sm text-yellow-900 hover:bg-yellow-400 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">Réserver un court</a>
+			</div>
+			<div class="my-5">
+				<a href="{{ path('home') }}" class="text-white text-sm block sm:inline-flex text-center justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Accueil</a>
+			</div>
+		</div>
 
-		<a href="{{ path('home') }}" class="mt-20 mb-16 text-white text-sm block inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Accueil</a>
 
 	</div>
 {% endblock %}

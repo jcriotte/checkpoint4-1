@@ -187,10 +187,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
             if (!document.getElementsByClassName('hour-selected').length > 0) {
                 if (reserveHint.classList.contains('hidden')) {
                     reserveHint.classList.remove('hidden');
+                    return;
                 }
                 return;
             }
 
+            // eslint-disable-next-line operator-linebreak
             const date = document.getElementById('date-booking').dataset.value;
             // eslint-disable-next-line operator-linebreak
             const slot =
@@ -206,6 +208,16 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             const court = slotSplit[0];
             const hour = slotSplit[1];
+
+            const data = {
+                year,
+                month,
+                day,
+                court,
+                hour,
+            };
+
+            redirectPost('/booking/new', data);
         });
     }
 });

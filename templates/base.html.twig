@@ -15,6 +15,54 @@
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
-	<body class="bg-gray-50"> {% block body %}{% endblock %}
+	<body class="font-mono bg-gray-50 min-h-screen flex flex-col items-center">
+		<div class="flex-grow flex flex-col items-center px-3 sm:px-4 max-w-3xl w-full">
+			<header class="relative flex justify-between items-center sm:mt-8 font-bold py-2 w-full mx-auto sticky top-0 bg-gray-50 z-10">
+				<div class="w-11 h-11"></div>
+				<a href="{{ path('home') }}">
+					<h1 class="mx-auto text-3xl sm:text-5xl text-yellow-700 pt-1 pb-0.5 px-2">Tout Court</h1>
+				</a>
+
+				{% if app.user %}
+					<a href="{{ path('profile') }}" class="relative block p-3 bg-gray-200">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 20 20" fill="#374151">
+							<title>
+								user avatar
+							</title>
+							<path d="M10 12.5c-5.92 0-9 3.5-9 5.5v1h18v-1c0-2-3.08-5.5-9-5.5z"/>
+							<circle cx="10" cy="6" r="5"/>
+						</svg>
+						<span class="absolute top-1 left-1 w-2 h-2 mr-2 bg-green-500 rounded-full"></span>
+					</a>
+				{% else %}
+					<button type="button" id="login-icon" class="relative block p-3 bg-gray-200">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 20 20" fill="#374151">
+							<title>
+								user avatar
+							</title>
+							<path d="M10 12.5c-5.92 0-9 3.5-9 5.5v1h18v-1c0-2-3.08-5.5-9-5.5z"/>
+							<circle cx="10" cy="6" r="5"/>
+						</svg>
+						<span class="absolute top-1 left-1 w-2 h-2 mr-2 bg-red-500 rounded-full"></span>
+					</button>
+
+				{% endif %}
+			</header>
+
+			<main class="flex-grow flex flex-col items-center w-full"> {% block body %}{% endblock %}
+				</main>
+
+				<footer class="text-center text-gray-400 text-xs my-6">
+					<p class="mb-2">
+						Coded by
+						<a class="text-yellow-400 hover:underline" href="https://www.jeremygautrais.fr/" target="_blank" rel="noopener">Jérémy</a>
+					</p>
+					<p>
+						Source code on
+						<a class="text-yellow-400 hover:underline" href="https://github.com/jgautrais/checkpoint4" target="_blank" rel="noreferrer">Github</a>
+					</p>
+				</footer>
+			</div>
+
 		</body>
 	</html>

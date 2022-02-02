@@ -1,20 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}
+	{{ parent() }}
+	- Connexion
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<form action="{{ path('login') }}" method="post">
+		<div class="bg-white px-4 pt-5 pb-8 sm:p-6">
+			<div class="sm:flex sm:items-start justify-center">
+				<div class="mt-3 text-center sm:mt-0">
+					<h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+						Connexion
+					</h3>
+					<div class="mt-6">
+						<div class="flex items-center justify-between my-3">
+							<label class="block text-sm w-28 text-left" for="username">Email:</label>
+							<input class="flex-grow text-xs block bg-gray-200 px-2 py-1.5 ml-2" type="email" id="username" name="_username"/>
+						</div>
+						<div class="flex items-center justify-between w-full">
+							<label class="block text-sm w-28 text-left" for="password">Mot de passe:</label>
+							<input class="flex-grow text-xs block bg-gray-200 px-2 py-1.5 ml-2" type="password" id="password" name="_password"/>
+						</div>
+						{% if error %}
+							<p class="text-sm text-red-500 mt-3">
+								{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+						{% endif %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+						<input type="hidden" name="{{ path('home') }}" value="/"/>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/jeremy/WCS/checkpoint/checkpoint4/src/Controller/LoginController.php'|file_link(0) }}">src/Controller/LoginController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/jeremy/WCS/checkpoint/checkpoint4/templates/login/index.html.twig'|file_link(0) }}">templates/login/index.html.twig</a></code></li>
-    </ul>
-</div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					</div>
+				</div>
+			</div>
+			{# <a href="{{ path('app_forgot_password_request') }}" class="mt-4 block text-xs text-right hover:text-gray-700 hover:underline" target="_blank">Password reset</a> #}
+		</div>
+		<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between">
+
+			<div class="sm:flex sm:flex-row-reverse">
+				<button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+					Se connecter
+				</button>
+			</div>
+
+			<a href="{{ path('app_register') }}" class="mt-6 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+				S'inscrire
+			</a>
+
+		</div>
+	</form>
 {% endblock %}

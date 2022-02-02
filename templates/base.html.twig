@@ -17,6 +17,7 @@
 	</head>
 	<body class="font-mono bg-gray-50 min-h-screen flex flex-col items-center">
 		<div class="flex-grow flex flex-col items-center px-3 sm:px-4 max-w-3xl w-full">
+			{% include "/home/_login_modal.html.twig" %}
 			<header class="relative flex justify-between items-center sm:mt-8 font-bold py-2 w-full mx-auto sticky top-0 bg-gray-50 z-10">
 				<div class="w-11 h-11"></div>
 				<a href="{{ path('home') }}">

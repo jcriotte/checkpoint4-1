@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -29,7 +30,59 @@ function redirectPost(url, data) {
 
     form.submit();
 }
+
+function handleLoginModal() {
+    const loginModal = document.getElementById('login-modal');
+    const loginModalHide = document.getElementById('login-modal-hide');
+    const loginIcon = document.getElementById('login-icon');
+
+    if (loginIcon) {
+        loginIcon.addEventListener('click', () => {
+            if (loginModal.classList.contains('hidden')) {
+                loginModal.classList.remove('hidden');
+            }
+        });
+
+        loginModalHide.addEventListener('click', () => {
+            if (!loginModal.classList.contains('hidden')) {
+                loginModal.classList.add('hidden');
+            }
+        });
+    }
+}
+
+function fadeOut(el) {
+    // eslint-disable-next-line no-param-reassign
+    el.style.opacity = 1;
+    // eslint-disable-next-line wrap-iife
+    (function fade() {
+        // eslint-disable-next-line no-param-reassign
+        el.style.opacity -= 0.01;
+        if (el.style.opacity < 0) {
+            // eslint-disable-next-line no-param-reassign
+            el.style.display = 'none';
+        } else {
+            requestAnimationFrame(fade);
+        }
+    })();
+}
+
+function handleFlashMessagesDisplay() {
+    if (document.getElementsByClassName('flash').length > 0) {
+        const flash = document.getElementsByClassName('flash');
+        for (let i = 0; i < flash.length; i += 1) {
+            flash[i].opacity = 1;
+            setTimeout(() => {
+                fadeOut(flash[i]);
+            }, 4000);
+        }
+    }
+}
+
 window.addEventListener('DOMContentLoaded', (event) => {
+    handleLoginModal();
+    handleFlashMessagesDisplay();
+
     if (document.getElementById('days')) {
         const calendar = new Calendar();
 

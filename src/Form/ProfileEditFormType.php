@@ -13,15 +13,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class RegistrationFormType extends AbstractType
+class ProfileEditFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
-                'attr' => [
-                    'placeholder' => 'exemple@email.com'
-                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un email',
@@ -32,30 +29,34 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                'required' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez entrer un mot de passe',
-                    ]),
                     new Regex([
-                        'pattern' => '/(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}/',
+                        'pattern' => '/^$|(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}/',
                         'message' => 'Votre mot de passe doit contenir 
                         au minimum 6 caractères, dont un chiffre et une lettre'
                     ])
                 ],
             ])
             ->add('pseudo', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'pseudo'
-                ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez entrer un pseudo',
+                        'message' => 'Please enter a pseudo',
                     ]),
                     new Length([
                         'min' => 4,
                         'minMessage' => 'Votre pseudo doit comporter au minimum {{ limit }} caractères',
                         'max' => 255,
+                    ]),
+                ],
+            ])
+            ->add('confirmPassword', PasswordType::class, [
+                'mapped' => false,
+                'attr' => ['autocomplete' => 'current-password'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer votre mot de passe pour confirmer',
                     ]),
                 ],
             ]);

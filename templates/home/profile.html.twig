@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	- Profil
+{% endblock %}
+
+{% block body %}
+	<div class="relative w-full mx-auto max-w-2xl mt-16">
+		<div class="flex justify-between items-center">
+			<h2 class="text-3xl font-bold text-indigo-700 bg-indigo-100 rounded pt-2.5 pr-4 leading-none overflow-ellipsis overflow-hidden">{{ user.pseudo }}</h2>
+
+			<a href="{{ path('app_logout') }}" class="text-sm text-red-700 block inline-flex justify-center rounded-md shadow-sm border border-red-600 px-4 py-2 bg-white hover:text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex-shrink-0 ml-4">Déconnexion</a>
+		</div>
+
+		<a href="{{ path('profile_edit') }}" class="mt-5 text-gray-800 text-sm block inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Modifier mon profil</a>
+
+		{% for messages in app.flashes %}
+			{% for message in messages %}
+				<span class="absolute left-0 left-0 flash mt-5 text-green-700 text-sm block inline-flex justify-center rounded-md border border-green-200 shadow-sm px-3 py-1.5 bg-green-100">
+					{{ message }}
+				</span>
+			{% endfor %}
+		{% endfor %}
+
+
+		<a href="{{ path('home') }}" class="mt-20 mb-16 text-white text-sm block inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Accueil</a>
+
+	</div>
+{% endblock %}

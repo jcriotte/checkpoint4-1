@@ -119,18 +119,20 @@ export default class Calendar {
         const date = new Date(year, month, 0);
         const monthString = date.toLocaleString('fr-FR', { month: 'long' });
 
-        this.month.innerHTML = this.capitalizeFirstLetter(monthString);
+        // eslint-disable-next-line operator-linebreak
+        this.month.innerHTML =
+            this.constructor.capitalizeFirstLetter(monthString);
         this.month.dataset.value = month;
     }
 
     makeCalendar(month, year) {
         let week = 0;
-        const nbOfDays = this.numberOfDaysInMonth(month, year);
+        const nbOfDays = this.constructor.numberOfDaysInMonth(month, year);
 
         const calendar = [['', '', '', '', '', '', '']];
 
         for (let i = 1; i <= nbOfDays; i += 1) {
-            const dayIndex = this.getDayIndex(i, month, year);
+            const dayIndex = this.constructor.getDayIndex(i, month, year);
 
             if (i > 1 && dayIndex === 0) {
                 week += 1;

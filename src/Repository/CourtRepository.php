@@ -19,6 +19,15 @@ class CourtRepository extends ServiceEntityRepository
         parent::__construct($registry, Court::class);
     }
 
+    public function findAllWithoutBookings(): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('c.id, c.name, c.surface, c.cover')
+            ->orderBy('c.id', 'ASC');
+
+        return (array) $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Court[] Returns an array of Court objects
     //  */

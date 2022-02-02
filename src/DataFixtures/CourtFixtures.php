@@ -10,7 +10,7 @@ class CourtFixtures extends Fixture
 {
     private const COURTS = [
         [1, 'clay', true],
-        [2, 'green', false],
+        [2, 'grass', false],
         [3, 'hard', true],
         [4, 'clay', false],
         [5, 'hard', false]

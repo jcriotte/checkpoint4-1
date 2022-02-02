@@ -42,6 +42,14 @@ class CalendarInterface
         return self::MONTH_FRENCH[$month - 1];
     }
 
+    public function formatDateQuery(int $day, int $month, int $year): string
+    {
+        $dayPadded = sprintf("%02d", $day);
+        $monthPadded = sprintf("%02d", $month);
+
+        return "$year-$monthPadded-$dayPadded";
+    }
+
     private function numberOfDaysInMonth(int $month, int $year): int
     {
         return cal_days_in_month(CAL_GREGORIAN, $month, $year);

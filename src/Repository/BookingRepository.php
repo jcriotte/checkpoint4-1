@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Booking;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,22 @@ class BookingRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Booking::class);
+    }
+
+    public function findByDateWithoutBookings(string $date): array
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select('b.id, b.hour, b.date, u.id as user_id, 
+            u.pseudo as user_pseudo, u.email as user_email, 
+            c.id as court_id, c.name as court_name, c.surface as court_surface, 
+            c.cover as court_cover')
+            ->leftJoin('b.user', 'u')
+            ->leftJoin('b.court', 'c')
+            ->having('b.date = :date')
+            ->orderBy('b.id', 'ASC')
+            ->setParameter('date', date($date));
+
+        return (array) $query->getQuery()->getResult();
     }
 
     // /**

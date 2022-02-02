@@ -5,3 +5,26 @@
 .day-selected {
     @apply bg-blue-700 text-white;
 }
+
+.arrow {
+    border: solid rgba(0, 0, 0, 0.795);
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    &.up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+
+    &.down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+}
+
+.hour-non-selected {
+    @apply bg-yellow-100 text-yellow-800 border-2 border-yellow-100;
+}
+
+.hour-selected {
+    @apply bg-green-200 text-green-800 border-2 border-green-500;
+}

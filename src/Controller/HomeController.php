@@ -67,9 +67,6 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $currentPassword = $form->get('confirmPassword')->getData();
-            if (!is_string($currentPassword)) {
-                throw new Exception('Password is not of type string');
-            }
 
             $isPasswordValid = $this->checkCurrentPassword($currentPassword, $user, $userPasswordHasher);
 
@@ -82,9 +79,7 @@ class HomeController extends AbstractController
             }
 
             $plainPassword = $form->get('plainPassword')->getData();
-            if (!is_string($plainPassword)) {
-                throw new Exception('Password is not of type string');
-            }
+
             $this->handleNewPasswodRequest($plainPassword, $user, $userPasswordHasher);
 
             $entityManager->flush();
@@ -137,6 +132,9 @@ class HomeController extends AbstractController
         User $user,
         UserPasswordHasherInterface $userPasswordHasher
     ): bool {
+        if (!is_string($currentPassword)) {
+            throw new Exception('Password is not of type string');
+        }
 
         return $userPasswordHasher->isPasswordValid($user, $currentPassword);
     }
@@ -147,6 +145,9 @@ class HomeController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher
     ): void {
         if (null != $plainPassword) {
+            if (!is_string($plainPassword)) {
+                throw new Exception('Password is not of type string');
+            }
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,

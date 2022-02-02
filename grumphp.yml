@@ -4,7 +4,7 @@ grumphp:
             file: ./composer.json
         eslint:
             bin: node_modules/.bin/eslint
-            config: .eslintrc.yml        
+            config: .eslintrc.yml
         phpversion:
             project: '7.2'
         phpcpd:
@@ -15,11 +15,11 @@ grumphp:
             directory: 'src'
         phpstan:
             configuration: ./phpstan.neon
-            level: max
+            level: 7
         phpmd:
             whitelist_patterns:
                 - 'src'
-            exclude: 
+            exclude:
                 - '\src\Kernel.php'
             ruleset:
                 - 'phpmd.xml'

@@ -65,7 +65,7 @@ export default class Calendar {
             month = 12;
             year -= 1;
         } else if (month === 13) {
-            month += 1;
+            month = 1;
             year += 1;
         }
 

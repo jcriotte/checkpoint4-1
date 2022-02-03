@@ -100,6 +100,28 @@ window.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
+    if (document.getElementsByClassName('profile-booking-button')) {
+        const detailsButtons = document.getElementsByClassName(
+            'profile-booking-button',
+        );
+
+        for (let i = 0; i < detailsButtons.length; i += 1) {
+            detailsButtons[i].addEventListener('click', () => {
+                // eslint-disable-next-line operator-linebreak
+                const parent =
+                    detailsButtons[i].parentNode.parentNode.parentNode;
+
+                const detailsParent = parent.getElementsByClassName(
+                    'profile-booking-details',
+                );
+
+                for (let j = 0; j < detailsParent.length; j += 1) {
+                    detailsParent[j].classList.toggle('hidden');
+                }
+            });
+        }
+    }
+
     if (document.getElementsByClassName('court-div')) {
         const courts = document.getElementsByClassName('court-div');
         const arrows = document.getElementsByClassName('arrow');

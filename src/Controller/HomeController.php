@@ -5,9 +5,12 @@ namespace App\Controller;
 use Exception;
 use App\Entity\User;
 use App\Form\ProfileEditFormType;
+use Symfony\Component\Mime\Email;
 use App\Repository\BookingRepository;
+use App\Service\UserPasswordInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -37,7 +40,10 @@ class HomeController extends AbstractController
             throw new Exception('User not authenticated');
         }
 
-        $bookings = $bookingRepository->findBy(['user' => $user]);
+        $bookings = $bookingRepository->findBy(
+            ['user' => $user],
+            ['date' => 'ASC', 'hour' => 'ASC']
+        );
 
         return $this->render('home/profile.html.twig', [
             'user' => $user,
@@ -50,8 +56,9 @@ class HomeController extends AbstractController
      */
     public function profileEdit(
         Request $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager
+        UserPasswordInterface $userPassInterface,
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -68,7 +75,7 @@ class HomeController extends AbstractController
             // encode the plain password
             $currentPassword = $form->get('confirmPassword')->getData();
 
-            $isPasswordValid = $this->checkCurrentPassword($currentPassword, $user, $userPasswordHasher);
+            $isPasswordValid = $userPassInterface->checkCurrentPassword($currentPassword, $user);
 
             if (!$isPasswordValid) {
                 $errorConfirmation = 'Wrong password';
@@ -80,11 +87,27 @@ class HomeController extends AbstractController
 
             $plainPassword = $form->get('plainPassword')->getData();
 
-            $this->handleNewPasswodRequest($plainPassword, $user, $userPasswordHasher);
+            $userPassInterface->handleNewPasswodRequest($plainPassword, $user);
 
             $entityManager->flush();
 
-            $this->addFlash('green', 'Your profile has been updated');
+            $pseudo = $user->getPseudo();
+            $emailUser = $user->getEmail();
+            if (!is_string($emailUser) || !is_string($this->getParameter('mailer_from'))) {
+                throw new Exception('Email is not of type string');
+            }
+
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to($emailUser)
+                ->subject("Mise à jour de profil - Tout court")
+                ->html($this->renderView('mail/updateEmail.html.twig', [
+                    'pseudo' => $pseudo
+                ]));
+
+            $mailer->send($email);
+
+            $this->addFlash('green', 'Votre profil a été mis à jour');
 
             return $this->redirectToRoute('profile');
         }
@@ -97,8 +120,11 @@ class HomeController extends AbstractController
     /**
      * @Route("/Profile/{id}", name="profile_delete", methods={"POST"})
      */
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->getUser();
@@ -125,35 +151,5 @@ class HomeController extends AbstractController
         $session->invalidate();
 
         return $this->redirectToRoute('home');
-    }
-
-    private function checkCurrentPassword(
-        string $currentPassword,
-        User $user,
-        UserPasswordHasherInterface $userPasswordHasher
-    ): bool {
-        if (!is_string($currentPassword)) {
-            throw new Exception('Password is not of type string');
-        }
-
-        return $userPasswordHasher->isPasswordValid($user, $currentPassword);
-    }
-
-    private function handleNewPasswodRequest(
-        ?string $plainPassword,
-        User $user,
-        UserPasswordHasherInterface $userPasswordHasher
-    ): void {
-        if (null != $plainPassword) {
-            if (!is_string($plainPassword)) {
-                throw new Exception('Password is not of type string');
-            }
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $plainPassword
-                )
-            );
-        }
     }
 }

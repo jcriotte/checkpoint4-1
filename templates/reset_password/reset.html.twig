@@ -1,0 +1,32 @@
+{% extends 'baseResetPassword.html.twig' %}
+
+{% block title %}Reset your password
+{% endblock %}
+
+{% block body %}
+	<h1>Reset your password</h1>
+
+
+	<div class="">
+		<div class="mt-3 text-center sm:mt-0">
+			{{ form_start(resetForm) }}
+			<div class="my-4 flex flex-col items-center">
+				{{ form_row(resetForm.plainPassword) }}
+			</div>
+
+			{% set formerrorspassword = resetForm.vars.errors.form.getErrors(true) %}
+			{% if formerrorspassword|length %}
+				{% for error in formerrorspassword %}
+					<p class="text-left text-xs text-red-500 mb-0.5">
+						<span class="text-black">-</span>
+						{{ error.message }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		<button type="submit" class="mt-6 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+			Reset password
+		</button>
+		{{ form_end(resetForm) }}
+	</div>
+</div>{% endblock %}

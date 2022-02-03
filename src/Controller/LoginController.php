@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use Exception;
 use App\Entity\User;
+use Symfony\Component\Mime\Email;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
@@ -53,7 +55,8 @@ class LoginController extends AbstractController
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response {
         $currentUser = $this->getUser();
 
@@ -81,6 +84,23 @@ class LoginController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $pseudo = $user->getPseudo();
+            $emailUser = $user->getEmail();
+            if (!is_string($emailUser) || !is_string($this->getParameter('mailer_from'))) {
+                throw new Exception('Email is not of type string');
+            }
+
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to($emailUser)
+                ->subject("Inscription - Tout court")
+                ->html($this->renderView('mail/registerEmail.html.twig', [
+                    'pseudo' => $pseudo,
+                    'email' => $emailUser
+                ]));
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('home');
         }

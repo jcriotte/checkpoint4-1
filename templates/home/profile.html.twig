@@ -15,13 +15,64 @@
 
 		<a href="{{ path('profile_edit') }}" class="mt-5 text-gray-800 text-sm block inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Modifier mon profil</a>
 
-		{% for messages in app.flashes %}
+		{% for category, messages in app.flashes %}
 			{% for message in messages %}
-				<span class="absolute top-24 left-0 flash mt-5 text-green-700 text-sm block inline-flex justify-center rounded-md border border-green-200 shadow-sm px-3 py-1.5 bg-green-100">
+				<span class="absolute top-24 left-0 flash mt-5 text-{{ category }}-700 text-sm block inline-flex justify-center rounded-md border border-{{ category }}-200 shadow-sm px-3 py-1.5 bg-{{ category }}-100">
 					{{ message }}
 				</span>
 			{% endfor %}
 		{% endfor %}
+		<div>
+			<h2 class="self-start mt-20 mb-6 font-bold text-xl text-gray-800">Mes réservations
+			</h2>
+
+			<table class="w-full text-left table-fixed">
+				<thead class="text-yellow-800 text-sm sm:text-lg border-b-2 border-yellow-300 bg-yellow-50">
+					<tr>
+						<th class="pb-2 pt-1 w-24 sm:w-32">Date</th>
+						<th class="pb-2 pt-1 w-1/6 sm:w-1/6">Heure</th>
+						<th class="pb-2 pt-1 w-2/6 sm:w-4/6">Court</th>
+						<th class="pb-2 pt-1 w-2/6 sm:w-1/6 tracking-tighter">Actions</th>
+					</tr>
+				</thead>
+				<tbody class="text-sm sm:text-base">
+					{% for booking in bookings %}
+						<tr>
+							<td class="pt-4 pb-1 pr-4 pb-3 align-top border-b-2 border-gray-300 bg-gray-100 text-purple-900 font-bold">{{ booking.date|date('d/m/Y') }}</td>
+							<td class="pt-4 pb-1 pr-4 pb-3 align-top border-b-2 border-gray-300 bg-gray-100 ">
+								<p class="text-xs sm:text-sm pt-0.5 ">{{ booking.hour }}h00</p>
+							</td>
+							<td class="pt-4 pb-1 pr-4 pb-3 align-top border-b-2 border-gray-300 bg-gray-100">
+								<div class="flex flex-col">
+									<p class="font-bold">{{ booking.court.name }}</p>
+									<div class="profile-booking-details hidden mt-2 flex flex-col sm:flex-row sm:justify-center">
+										<p class="flex items-center mr-auto sm:mr-2 py-1.5 px-3 text-xs {{ booking.court.surface == 'clay' ? 'text-yellow-100 bg-yellow-800' : booking.court.surface == 'grass' ? 'text-green-100 bg-green-800' : 'text-blue-100 bg-blue-800' }}">
+											<span class="shrink-0 block w-5 h-5 rounded-full mr-2 {{ booking.court.surface == 'clay' ? 'bg-yellow-500' : booking.court.surface == 'grass' ? 'bg-green-500' : 'bg-blue-500' }}"></span>
+											{{ booking.court.surface == 'clay' ? 'Terre Battue' : booking.court.surface == 'grass' ? 'Gazon' : 'Bitume' }}
+										</p>
+										<p class="flex items-center text-xs mr-auto mt-1 sm:mt-0 py-1.5 px-3 {{ booking.court.cover == true ? 'bg-gray-800 text-gray-100' : 'bg-gray-300 text-gray-900' }}">{{ booking.court.cover == true ? 'Couvert' : 'Non-couvert' }}</p>
+									</div>
+								</div>
+							</td>
+							<td class="pt-4 pb-1 pr-4 pb-3 align-top border-b-2 border-gray-300 bg-gray-100">
+								<div class="flex flex-col">
+									<button class="profile-booking-button text-gray-800 text-xs block inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 py-1 bg-white hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-0">Détails</button>
+
+									<form method="post" action="{{ path('booking_delete', {'id': booking.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ booking.id) }}">
+										<button class="profile-booking-details hidden text-xs mt-4 text-white block inline-flex justify-center rounded-md shadow-sm border border-red-600 px-3 py-1 bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex-shrink-0">Supprimer</button>
+									</form>
+								</div>
+
+							</td>
+						</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+
+		</div>
 
 		<div class="sm:flex sm:flex-row-reverse sm:justify-between mt-16 mb-20">
 			<div class="my-5">

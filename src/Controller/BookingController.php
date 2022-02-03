@@ -6,12 +6,15 @@ use DateTime;
 use Exception;
 use App\Entity\User;
 use App\Entity\Booking;
+use App\Entity\Court;
 use App\Service\BookingInterface;
+use Symfony\Component\Mime\Email;
 use App\Service\CalendarInterface;
 use App\Repository\CourtRepository;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -87,7 +90,8 @@ class BookingController extends AbstractController
     public function create(
         Request $request,
         CourtRepository $courtRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -98,28 +102,21 @@ class BookingController extends AbstractController
         }
 
         $yearStr =  $request->get('year');
-        if (!is_string($yearStr)) {
-            throw new Exception('Date is not in string format');
-        }
 
         $monthStr =  $request->get('month');
-        if (!is_string($monthStr)) {
-            throw new Exception('Date is not in string format');
-        }
 
         $dayStr =  $request->get('day');
-        if (!is_string($dayStr)) {
-            throw new Exception('Date is not in string format');
-        }
 
         $courtStr =  $request->get('court');
-        if (!is_string($dayStr)) {
-            throw new Exception('Court is not in string format');
-        }
 
         $hourStr =  $request->get('hour');
-        if (!is_string($dayStr)) {
-            throw new Exception('Hour is not in string format');
+
+        $params = [$yearStr, $monthStr, $dayStr, $courtStr, $hourStr];
+
+        foreach ($params as $param) {
+            if (!is_string($param)) {
+                throw new Exception('Param is not in string format');
+            }
         }
 
         $month = sprintf("%02d", $monthStr);
@@ -146,8 +143,86 @@ class BookingController extends AbstractController
 
         $entityManager->flush();
 
+        $pseudo = $user->getPseudo();
+        $emailUser = $user->getEmail();
+        if (!is_string($emailUser) || !is_string($this->getParameter('mailer_from'))) {
+            throw new Exception('Email is not of type string');
+        }
+
+        $email = (new Email())
+            ->from($this->getParameter('mailer_from'))
+            ->to($emailUser)
+            ->subject("Nouvelle réservation - Tout court")
+            ->html($this->renderView('mail/newBooking.html.twig', [
+                'pseudo' => $pseudo,
+                'name' => $courtName,
+                'date' => "$day/$month/$yearStr",
+                'hour' => $hour
+            ]));
+
+        $mailer->send($email);
+
+
         $this->addFlash('green', "Votre réservation du $day/$month/$yearStr à $hour"
             . "h00 pour le $courtName est confirmée");
+
+        return $this->redirectToRoute('profile');
+    }
+
+    /**
+     * @Route("/{id}", name="delete", methods={"POST"})
+     */
+    public function delete(
+        Request $request,
+        Booking $booking,
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
+    ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $user = $this->getUser();
+
+        if (!$user instanceof User || !$booking->getUser() instanceof User) {
+            throw new Exception('User not authenticated');
+        }
+
+        if ($booking->getUser()->getId() !== $user->getId()) {
+            throw new Exception('Delete request denied');
+        }
+
+        if (!is_string($request->request->get('_token'))) {
+            throw new Exception('Token not available');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $booking->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($booking);
+            $entityManager->flush();
+        }
+
+        if (!$booking->getCourt() instanceof Court) {
+            throw new Exception('Court not retrieved');
+        }
+
+        $courtName = $booking->getCourt()->getName();
+
+        $pseudo = $user->getPseudo();
+        $emailUser = $user->getEmail();
+        if (!is_string($emailUser) || !is_string($this->getParameter('mailer_from'))) {
+            throw new Exception('Email is not of type string');
+        }
+
+        $email = (new Email())
+            ->from($this->getParameter('mailer_from'))
+            ->to($emailUser)
+            ->subject("Annulation de réservation - Tout court")
+            ->html($this->renderView('mail/deleteBooking.html.twig', [
+                'pseudo' => $pseudo,
+                'name' => $courtName
+            ]));
+
+        $mailer->send($email);
+
+        $this->addFlash('yellow', "Votre réservation du $courtName est annulée");
 
         return $this->redirectToRoute('profile');
     }

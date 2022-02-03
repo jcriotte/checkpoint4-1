@@ -1,0 +1,48 @@
+{% extends 'baseResetPassword.html.twig' %}
+
+{% block title %}Reset your password
+{% endblock %}
+
+{% block body %}
+	{% for flasherror in app.flashes('reset_password_error') %}
+		<div class="text-xs text-red-600 my-4" role="alert">{{ flasherror }}</div>
+	{% endfor %}
+	<h1>Reset your password</h1>
+
+	{{ form_start(requestForm) }}
+	<div class="flex items-center w-full my-3">
+		{{ form_label(requestForm.email, 'Email:', {'label_attr': {
+                                'class': 'block text-sm w-24 text-left'
+                            }}) }}
+		{{ form_widget(requestForm.email, {'attr': {
+                                'class': 'text-xs block bg-gray-200 px-2 py-1.5 ml-2'
+                            }}) }}
+	</div>
+
+	{% set formerrorsemail = requestForm.email.vars.errors.form.getErrors(true) %}
+	{% if formerrorsemail|length %}
+		{% for error in formerrorsemail %}
+			<p class="text-left text-xs text-red-500 mb-0.5">
+				<span class="text-black">-</span>
+				{{ error.message }}</p>
+		{% endfor %}
+	{% endif %}
+
+	<p class="text-xs mb-4">Enter your email address and we will send you a link to reset your password.</p>
+
+	<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between">
+
+		<div class="sm:flex sm:flex-row-reverse">
+			<button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm">
+				Send password reset email
+			</button>
+		</div>
+
+		<a href="{{ path('home') }}" class="mt-6 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+			Cancel
+		</a>
+
+	</div>
+
+	{{ form_end(requestForm) }}
+{% endblock %}

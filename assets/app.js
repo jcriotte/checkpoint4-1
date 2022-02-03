@@ -117,11 +117,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 modal.getElementsByClassName('booking-modal-hide')[0];
 
             bookingSlots[i].addEventListener('click', () => {
-                modal.classList.toggle('hidden');
+                if (modal.classList.contains('hidden')) {
+                    modal.classList.remove('hidden');
+                }
+            });
 
-                hideButton.addEventListener('click', () => {
-                    modal.classList.toggle('hidden');
-                });
+            hideButton.addEventListener('click', () => {
+                if (!modal.classList.contains('hidden')) {
+                    modal.classList.add('hidden');
+                }
             });
         }
     }

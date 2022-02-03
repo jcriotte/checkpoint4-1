@@ -23,12 +23,12 @@ class UserFixtures extends Fixture
         for ($i = 0; $i < self::USERS; $i++) {
             $user = new User();
 
-            $user->setEmail("test$i@email.com");
+            $user->setEmail("user$i@email.com");
 
-            $hashedPassword = $this->passwordHasher->hashPassword($user, "test$i");
+            $hashedPassword = $this->passwordHasher->hashPassword($user, "user$i");
             $user->setPassword($hashedPassword);
 
-            $user->setPseudo("test$i");
+            $user->setPseudo("user$i");
 
             $manager->persist($user);
 

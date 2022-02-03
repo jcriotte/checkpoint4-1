@@ -72,6 +72,7 @@ class BookingController extends AbstractController
     public function create(
         Request $request,
         CourtRepository $courtRepository,
+        BookingRepository $bookingRepository,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer
     ): Response {
@@ -113,6 +114,11 @@ class BookingController extends AbstractController
 
         $courtName = $court->getName();
         $dateTime = new DateTime("$yearStr-$month-$day");
+
+        $currentBooking = $bookingRepository->findBy(['date' => $dateTime, 'hour' => $hour, 'court' => $court]);
+        if (!empty($currentBooking)) {
+            throw new Exception('Slot is already booked');
+        }
 
         $booking = new Booking();
 

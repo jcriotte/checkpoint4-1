@@ -9,11 +9,11 @@ use Doctrine\Persistence\ObjectManager;
 class CourtFixtures extends Fixture
 {
     private const COURTS = [
-        [1, 'clay', true],
-        [2, 'grass', false],
-        [3, 'hard', true],
-        [4, 'clay', false],
-        [5, 'hard', false]
+        [1, 'Court Philippe-Chatrier', 'clay', true],
+        [2, 'Court Suzanne Lenglen', 'grass', false],
+        [3, 'Court Simonne Mathieu', 'hard', true],
+        [4, 'Court Central', 'clay', false],
+        [5, 'Court extérieur n°5', 'hard', false]
     ];
 
     public function load(ObjectManager $manager): void
@@ -21,11 +21,10 @@ class CourtFixtures extends Fixture
         foreach (self::COURTS as $courtDetails) {
             $court = new Court();
 
-            $courtNumber  = sprintf("%02d", $courtDetails[0]);
-            $court->setName("Court n°$courtNumber");
+            $court->setName($courtDetails[1]);
 
-            $court->setSurface($courtDetails[1]);
-            $court->setCover($courtDetails[2]);
+            $court->setSurface($courtDetails[2]);
+            $court->setCover($courtDetails[3]);
 
             $manager->persist($court);
 

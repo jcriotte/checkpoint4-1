@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('admin_booking_delete', {'id': array.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer cette réservation?');">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ array.id) }}">
+	<button class="text-red-600 text-sm block mx-auto sm:mx-0 sm:inline-flex text-center justify-center rounded-md border border-red-500 shadow-sm px-4 py-2.5 bg-gray-100 hover:bg-red-500 hover:text-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Supprimer</button>
+</form>

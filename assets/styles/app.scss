@@ -3,7 +3,7 @@
 @import 'tailwindcss/utilities';
 
 .day-selected {
-    @apply bg-blue-700 text-white;
+    @apply bg-blue-500 text-white rounded-md;
 }
 
 .arrow {

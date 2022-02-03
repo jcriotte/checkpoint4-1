@@ -25,7 +25,7 @@
 				</a>
 
 				{% if app.user %}
-					<a href="{{ path('profile') }}" class="relative block p-3 bg-gray-200">
+					<a href="{{ path('profile') }}" class="relative flex items-center p-3 bg-gray-200">
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewbox="0 0 20 20" fill="#374151">
 							<title>
 								user avatar
@@ -33,6 +33,7 @@
 							<path d="M10 12.5c-5.92 0-9 3.5-9 5.5v1h18v-1c0-2-3.08-5.5-9-5.5z"/>
 							<circle cx="10" cy="6" r="5"/>
 						</svg>
+						<span class="hidden sm:inline ml-2 leading-none pt-1 text-gray-500 hover:text-gray-800">Profil</span>
 						<span class="absolute top-1 left-1 w-2 h-2 mr-2 bg-green-500 rounded-full"></span>
 					</a>
 				{% else %}

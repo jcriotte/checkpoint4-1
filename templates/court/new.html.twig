@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	- Administration - Courts
+{% endblock %}
+
+{% block body %}
+	<div class="relative w-full mx-auto max-w-3xl mt-16">
+		<div class="flex justify-start items-center">
+			<h2 class="text-3xl font-bold text-pink-700 bg-pink-100 rounded pt-2.5 pr-4 leading-none overflow-ellipsis overflow-hidden">Administration</h2>
+		</div>
+		<h3 class="self-start mt-8 mb-4 font-bold text-xl text-gray-800">Ajouter un court</h3>
+
+		<div class="w-full mx-auto flex flex-col items-center mt-8">
+
+			{{ include('court/_form.html.twig') }}
+
+			<div class="sm:flex sm:justify-between my-16 w-full">
+				<div class="my-5">
+					<a href="{{ path('admin_court_index') }}" class="text-gray-600 text-sm block sm:inline-flex text-center justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-100 hover:bg-gray-200 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Retour à la liste des courts</a>
+				</div>
+				<div class="my-5">
+					<a href="{{ path('admin_index') }}" class="text-white text-sm block sm:inline-flex text-center justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Retour à l'administration</a>
+				</div>
+
+			</div>
+		</div>
+	{% endblock %}

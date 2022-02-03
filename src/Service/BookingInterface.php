@@ -63,6 +63,7 @@ class BookingInterface
             if (in_array($courtId, $this->courtsId)) {
                 $courts[$courtId]['slots'][$hour]['booked'] = true;
 
+                $courts[$courtId]['slots'][$hour]['id'] = $booking['id'];
                 $courts[$courtId]['slots'][$hour]['user_id'] = $booking['user_id'];
                 $courts[$courtId]['slots'][$hour]['user_pseudo'] = $booking['user_pseudo'];
                 $courts[$courtId]['slots'][$hour]['user_email'] = $booking['user_email'];

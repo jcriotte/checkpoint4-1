@@ -15,14 +15,14 @@
 								<p class="font-bold w-24 text-left">Court:</p>
 								<div class="flex flex-col items-start">
 									<p>{{ court.info.name }}</p>
-									<div class="flex justify-start flex-wrap mt-2">
-										<div class="flex items-center mr-4">
+									<div class="flex justify-start flex-wrap mt-1">
+										<div class="flex items-center mr-4 mt-1">
 											<p class="flex items-center py-1.5 px-3 text-xs {{ court.info.surface == 'clay' ? 'text-yellow-100 bg-yellow-800' : court.info.surface == 'grass' ? 'text-green-100 bg-green-800' : 'text-blue-100 bg-blue-800' }}">
 												<span class="block w-5 h-5 rounded-full mr-2 {{ court.info.surface == 'clay' ? 'bg-yellow-500' : court.info.surface == 'grass' ? 'bg-green-500' : 'bg-blue-500' }}"></span>
 												{{ court.info.surfaceFR }}
 											</p>
 										</div>
-										<div class="flex items-center text-xs py-1.5 px-3 {{ court.info.cover == true ? 'bg-gray-800 text-gray-100' : 'bg-gray-300 text-gray-900' }}">{{ court.info.cover == true ? 'Couvert' : 'Non-couvert' }}</div>
+										<div class="flex items-center text-xs py-1.5 px-3 mt-1 {{ court.info.cover == true ? 'bg-gray-800 text-gray-100' : 'bg-gray-300 text-gray-900' }}">{{ court.info.cover == true ? 'Couvert' : 'Non-couvert' }}</div>
 									</div>
 								</div>
 							</div>
@@ -46,9 +46,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between">
+			<div class="bg-gray-50 px-4 py-3 sm:px-6 w-full">
 
-				<div class="sm:flex sm:flex-row-reverse">
+				<div class="sm:flex sm:flex-row-reverse sm:justify-between">
+					{{ include('admin/_delete_booking.html.twig') }}
 					<button type="button" class="booking-modal-hide mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
 						Fermer
 					</button>

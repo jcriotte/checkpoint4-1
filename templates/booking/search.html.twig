@@ -46,7 +46,7 @@
 	</div>
 
 	<div class="w-full mx-auto flex flex-col items-center">
-		<h2 id="date-booking" class="text-xl sm:text-3xl font-bold text-blue-700 bg-blue-100 pt-2.5 px-4 leading-none mt-8 mb-8 rounded" data-value="{{ today ~ '/' ~ month ~ '/' ~ year }}">
+		<h2 id="date-booking" class="text-xl sm:text-3xl font-bold text-yellow-700 bg-yellow-100 pt-2.5 px-4 leading-none mt-8 mb-8 rounded" data-value="{{ today ~ '/' ~ month ~ '/' ~ year }}">
 			{{ '%02d'|format(today) ~ '/' ~ '%02d'|format(month) ~ '/' ~ year }}</h2>
 
 		<h2 class="self-start mt-8 mb-6 font-bold text-xl text-gray-800 flex flex-col sm:flex-row items-start sm:items-center">Choississez votre horaire
@@ -55,11 +55,11 @@
 
 		{% for court in courts %}
 
-			<div class="court-div text-sm sm:text-base flex items-center justify-between w-full px-5 py-2 text-lg font-bold text-gray-700 bg-gray-200 mb-3 cursor-pointer">
+			<div class="court-div text-sm sm:text-base flex items-center justify-between rounded w-full px-5 py-2 text-lg font-bold text-gray-700 bg-gray-100 border-2 border-gray-200 mb-3 cursor-pointer">
 				<div class="flex flex-col sm:flex-row items-start sm:items-center">
 					<p>{{ court.info.name }}</p>
 					<div class="flex items-center">
-						<div class="w-40 sm:w-48 flex items-center">
+						<div class="flex items-center mr-6">
 							<p class="flex items-center ml-0 sm:ml-8 py-1.5 px-3 text-xs {{ court.info.surface == 'clay' ? 'text-yellow-100 bg-yellow-800' : court.info.surface == 'grass' ? 'text-green-100 bg-green-800' : 'text-blue-100 bg-blue-800' }}">
 								<span class="block w-5 h-5 rounded-full mr-2 {{ court.info.surface == 'clay' ? 'bg-yellow-500' : court.info.surface == 'grass' ? 'bg-green-500' : 'bg-blue-500' }}"></span>
 								{{ court.info.surfaceFR }}

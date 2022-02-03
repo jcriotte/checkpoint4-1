@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}
+	- Administration - Courts
+{% endblock %}
+
+{% block body %}
+	<div class="relative w-full mx-auto max-w-3xl mt-16">
+		<div class="flex justify-start items-center">
+			<h2 class="text-3xl font-bold text-pink-700 bg-pink-100 rounded pt-2.5 pr-4 leading-none overflow-ellipsis overflow-hidden">Administration</h2>
+		</div>
+		<h3 class="self-start mt-8 mb-4 font-bold text-xl text-gray-800">Gérer les courts</h3>
+
+		<div class="w-full mx-auto flex flex-col items-center mt-8">
+
+			<table class="text-xs sm:text-sm w-full text-left table-fixed">
+				<thead class="text-yellow-800 text-sm sm:text-lg border-b-2 border-yellow-300 bg-yellow-50">
+					<tr>
+						<th class="pl-2 pb-2 pt-1 w-1/12">Id</th>
+						<th class="pb-2 pt-1 w-4/12">Nom</th>
+						<th class="pb-2 pt-1 w-2/12">Surface</th>
+						<th class="pb-2 pt-1 w-2/12">Couv.</th>
+						<th class="pb-2 pt-1 w-2/12">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for court in courts %}
+						<tr>
+							<td class="pl-2 pt-4 pb-3 pr-4 align-middle border-b-2 border-gray-300 bg-gray-100">{{ court.id }}</td>
+							<td class="pt-4 pb-3 pr-4 align-middle border-b-2 border-gray-300 bg-gray-100 font-bold">{{ court.name }}</td>
+							<td class="pt-4 pb-3 pr-4 align-middle border-b-2 border-gray-300 bg-gray-100">{{ court.surface == 'clay' ? 'Terre Battue' : court.surface == 'grass' ? 'Gazon' : 'Bitume' }}</td>
+							<td class="pt-4 pb-3 pr-4 align-middle border-b-2 border-gray-300 bg-gray-100">{{ court.cover ? '✅' : '-' }}</td>
+							<td class="pt-4 pb-3 pr-4 align-middle border-b-2 border-gray-300 bg-gray-100 items-center">
+								<div class="flex flex-col sm:flex-row">
+									<a href="{{ path('admin_court_edit', {'id': court.id}) }}" class="text-gray-800 text-xs block inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 py-1 bg-white hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-0 my-1">edit</a>
+								</div>
+
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="sm:flex sm:justify-between my-16 w-full">
+				<div class="my-5">
+					<a href="{{ path('admin_court_new') }}" class="text-yellow-900 text-sm block sm:inline-flex text-center justify-center rounded-md border border-yellow-400 shadow-sm px-4 py-2.5 bg-yellow-50 hover:bg-yellow-400 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Ajouter un court</a>
+				</div>
+				<div class="my-5">
+					<a href="{{ path('admin_index') }}" class="text-white text-sm block sm:inline-flex text-center justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Retour à l'administration</a>
+				</div>
+
+			</div>
+		</div>
+	{% endblock %}

@@ -1,0 +1,76 @@
+{{ form_start(form) }}
+<div class="bg-white px-4 pt-2 pb-8 sm:p-6 mx-auto">
+	<div class="sm:flex sm:items-start justify-center">
+		<div class="mt-3 text-center sm:mt-0">
+			<h2 class="mb-6 text-lg leading-6 font-medium text-gray-900" id="modal-title">
+				Informations
+			</h2>
+			<div class="mt-8">
+				<div class="w-full">
+					<div class="flex items-center justify-between w-full my-3">
+						{{ form_label(form.name, 'Nom:', {'label_attr': {
+                                'class': 'block text-sm w-28 text-left'
+                            }}) }}
+						{{ form_widget(form.name, {'attr': {
+                                'class': 'flex-grow text-xs block bg-gray-200 px-2 py-1.5 ml-2'
+                            }}) }}
+					</div>
+
+					{% set formerrorsname = form.name.vars.errors.form.getErrors(true) %}
+					{% if formerrorsname|length %}
+						{% for error in formerrorsname %}
+							<p class="text-left text-xs text-red-500 mb-0.5">
+								<span class="text-black">-</span>
+								{{ error.message }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+
+				<div class="w-full">
+					<div class="flex items-center justify-between w-full my-3">
+						{{ form_label(form.surface, 'Surface:', {'label_attr': {
+                                'class': 'block text-sm w-28 text-left'
+                            }}) }}
+						{{ form_widget(form.surface, {'attr': {
+                                'class': 'flex-grow text-xs block bg-gray-200 px-2 py-1.5 ml-2'
+                            }}) }}
+					</div>
+
+					{% set formerrorssurface = form.surface.vars.errors.form.getErrors(true) %}
+					{% if formerrorssurface|length %}
+						{% for error in formerrorssurface %}
+							<p class="text-left text-xs text-red-500 mb-0.5">
+								<span class="text-black">-</span>
+								{{ error.message }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+
+				<div class="w-full">
+					<div class="flex items-center justify-start w-full mt-3 mb-2">
+						{{ form_label(form.cover, 'Couvert ?', {'label_attr': {
+                                'class': 'block text-sm w-28 text-left'
+                            }}) }}
+						{{ form_widget(form.cover, {'attr': {
+                                'class': 'text-xs block bg-gray-200 px-2 py-1.5 ml-2'
+                            }}) }}
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
+
+	<div class="sm:flex sm:flex-row-reverse">
+		<button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+			Sauvegarder
+		</button>
+	</div>
+
+
+</div>
+{{ form_rest(form) }}
+{{ form_end(form) }}

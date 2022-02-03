@@ -154,8 +154,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     if (document.getElementsByClassName('court-div')) {
         const courts = document.getElementsByClassName('court-div');
-        const arrows = document.getElementsByClassName('arrow');
-        const slots = document.getElementsByClassName('slots');
 
         const hours = document.getElementsByClassName('slot-hour');
 
@@ -175,36 +173,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     return;
                 }
 
-                for (let j = 0; j < arrows.length; j += 1) {
-                    if (
-                        !arrows[
-                            j
-                        ].parentNode.nextElementSibling.getElementsByClassName(
-                            'hour-selected',
-                        ).length > 0
-                    ) {
-                        if (arrows[j].classList.contains('up')) {
-                            arrows[j].classList.remove('up');
-                        }
-                        if (!arrows[j].classList.contains('down')) {
-                            arrows[j].classList.add('down');
-                        }
-                    }
-                }
-
                 arrow.classList.remove('down');
                 arrow.classList.add('up');
-
-                for (let j = 0; j < slots.length; j += 1) {
-                    if (
-                        !slots[j].getElementsByClassName('hour-selected')
-                            .length > 0
-                    ) {
-                        if (!slots[j].classList.contains('hidden')) {
-                            slots[j].classList.add('hidden');
-                        }
-                    }
-                }
 
                 slot.classList.remove('hidden');
             });

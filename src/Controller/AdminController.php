@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use Exception;
 use App\Entity\User;
+use App\Entity\Booking;
 use App\Service\BookingInterface;
 use App\Service\CalendarInterface;
 use App\Service\HandleBookingsSearch;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,5 +68,23 @@ class AdminController extends AbstractController
         $params['courts'] = $courts;
 
         return $this->render('admin/bookings.html.twig', $params);
+    }
+
+    /**
+     * @Route("/booking/{id}", name="booking_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response
+    {
+        $token = $request->request->get('_token');
+        if (!is_string($token)) {
+            throw new Exception('Token not valid');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $booking->getId(), $token)) {
+            $entityManager->remove($booking);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin_bookings', [], Response::HTTP_SEE_OTHER);
     }
 }

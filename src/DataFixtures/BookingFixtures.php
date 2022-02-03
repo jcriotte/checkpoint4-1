@@ -26,7 +26,7 @@ class BookingFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < self::BOOKINGS; $i++) {
             $booking = new Booking();
 
-            $userId = rand(0, 29);
+            $userId = rand(0, 200);
             $courtId = rand(1, 5);
 
             $date = rand($minDate, $maxDate);

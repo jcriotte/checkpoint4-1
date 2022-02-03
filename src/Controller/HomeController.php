@@ -40,10 +40,13 @@ class HomeController extends AbstractController
             throw new Exception('User not authenticated');
         }
 
-        $bookings = $bookingRepository->findBy(
-            ['user' => $user],
-            ['date' => 'ASC', 'hour' => 'ASC']
-        );
+        $id = $user->getId();
+
+        if (null === $id) {
+            throw new Exception('User not authenticated');
+        }
+
+        $bookings = $bookingRepository->findByUserWithoutBookings($id);
 
         return $this->render('home/profile.html.twig', [
             'user' => $user,

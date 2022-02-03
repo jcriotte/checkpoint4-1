@@ -44,13 +44,13 @@
 							</td>
 							<td class="pt-4 pb-1 pr-4 pb-3 align-top border-b-2 border-gray-300 bg-gray-100">
 								<div class="flex flex-col">
-									<p class="font-bold">{{ booking.court.name }}</p>
+									<p class="font-bold">{{ booking.court_name }}</p>
 									<div class="profile-booking-details hidden mt-2 flex flex-col sm:flex-row sm:justify-center">
-										<p class="flex items-center mr-auto sm:mr-2 py-1.5 px-3 text-xs {{ booking.court.surface == 'clay' ? 'text-yellow-100 bg-yellow-800' : booking.court.surface == 'grass' ? 'text-green-100 bg-green-800' : 'text-blue-100 bg-blue-800' }}">
-											<span class="shrink-0 block w-5 h-5 rounded-full mr-2 {{ booking.court.surface == 'clay' ? 'bg-yellow-500' : booking.court.surface == 'grass' ? 'bg-green-500' : 'bg-blue-500' }}"></span>
-											{{ booking.court.surface == 'clay' ? 'Terre Battue' : booking.court.surface == 'grass' ? 'Gazon' : 'Bitume' }}
+										<p class="flex items-center mr-auto sm:mr-2 py-1.5 px-3 text-xs {{ booking.court_surface == 'clay' ? 'text-yellow-100 bg-yellow-800' : booking.court_surface == 'grass' ? 'text-green-100 bg-green-800' : 'text-blue-100 bg-blue-800' }}">
+											<span class="shrink-0 block w-5 h-5 rounded-full mr-2 {{ booking.court_surface == 'clay' ? 'bg-yellow-500' : booking.court_surface == 'grass' ? 'bg-green-500' : 'bg-blue-500' }}"></span>
+											{{ booking.court_surface == 'clay' ? 'Terre Battue' : booking.court_surface == 'grass' ? 'Gazon' : 'Bitume' }}
 										</p>
-										<p class="flex items-center text-xs mr-auto mt-1 sm:mt-0 py-1.5 px-3 {{ booking.court.cover == true ? 'bg-gray-800 text-gray-100' : 'bg-gray-300 text-gray-900' }}">{{ booking.court.cover == true ? 'Couvert' : 'Non-couvert' }}</p>
+										<p class="flex items-center text-xs mr-auto mt-1 sm:mt-0 py-1.5 px-3 {{ booking.court_cover == true ? 'bg-gray-800 text-gray-100' : 'bg-gray-300 text-gray-900' }}">{{ booking.court_cover == true ? 'Couvert' : 'Non-couvert' }}</p>
 									</div>
 								</div>
 							</td>

@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\Booking;
 use DateTime;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\User;
+use App\Entity\Booking;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Booking|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,6 +33,22 @@ class BookingRepository extends ServiceEntityRepository
             ->having('b.date = :date')
             ->orderBy('b.id', 'ASC')
             ->setParameter('date', date($date));
+
+        return (array) $query->getQuery()->getResult();
+    }
+
+    public function findByUserWithoutBookings(int $id): array
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select('b.id, b.hour, b.date, u.id as user_id,
+            c.id as court_id, c.name as court_name, c.surface as court_surface, 
+            c.cover as court_cover')
+            ->leftJoin('b.user', 'u')
+            ->leftJoin('b.court', 'c')
+            ->having('user_id = :id')
+            ->addOrderBy('b.date', 'ASC')
+            ->addOrderBy('b.hour', 'ASC')
+            ->setParameter('id', $id);
 
         return (array) $query->getQuery()->getResult();
     }

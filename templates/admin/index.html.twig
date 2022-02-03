@@ -1,20 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% block title %}
+	{{ parent() }}
+	- Administration
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<div class="relative w-full mx-auto max-w-3xl mt-16">
+		<div class="flex justify-start items-center">
+			<h2 class="text-3xl font-bold text-pink-700 bg-pink-100 rounded pt-2.5 pr-4 leading-none overflow-ellipsis overflow-hidden">Administration</h2>
+		</div>
+		<div class="flex flex-col mt-8">
+			<div>
+				<a href="{{ path('admin_bookings') }}" class="mt-5 text-gray-800 text-sm block text-center sm:inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Consulter les réservations</a>
+			</div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+			<div>
+				<a href="{{ path('profile_edit') }}" class="mt-5 text-gray-800 text-sm block text-center sm:inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Gérer les courts</a>
+			</div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/jeremy/WCS/checkpoint/checkpoint4/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/jeremy/WCS/checkpoint/checkpoint4/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+		</div>
+
+
+		<div class="sm:flex sm:flex-row-reverse sm:justify-between mt-16 mb-20">
+			<div class="my-5">
+				<a href="{{ path('home') }}" class="text-white text-sm block sm:inline-flex text-center justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2.5 bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Retour au site</a>
+			</div>
+		</div>
+
+	</div>
 {% endblock %}

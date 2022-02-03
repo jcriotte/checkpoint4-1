@@ -5,13 +5,14 @@ namespace App\Controller;
 use DateTime;
 use Exception;
 use App\Entity\User;
-use App\Entity\Booking;
 use App\Entity\Court;
+use App\Entity\Booking;
 use App\Service\BookingInterface;
 use Symfony\Component\Mime\Email;
 use App\Service\CalendarInterface;
 use App\Repository\CourtRepository;
 use App\Repository\BookingRepository;
+use App\Service\HandleBookingsSearch;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -30,7 +31,8 @@ class BookingController extends AbstractController
     public function search(
         Request $request,
         CalendarInterface $calendarInterface,
-        BookingInterface $bookingInterface
+        BookingInterface $bookingInterface,
+        HandleBookingsSearch $searchHandler
     ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -42,30 +44,11 @@ class BookingController extends AbstractController
 
         $params = [];
 
-        if ($request->getMethod() === 'POST') {
-            $yearStr =  $request->get('year');
-            if (!is_string($yearStr)) {
-                throw new Exception('Date is not in string format');
-            }
+        $postData = $searchHandler->setParams($request);
 
-            $monthStr =  $request->get('month');
-            if (!is_string($monthStr)) {
-                throw new Exception('Date is not in string format');
-            }
-
-            $todayStr =  $request->get('day');
-            if (!is_string($todayStr)) {
-                throw new Exception('Date is not in string format');
-            }
-
-            $year = (int) $yearStr;
-            $month = (int) $monthStr;
-            $today = (int) $todayStr;
-        } else {
-            $year = (int) date("Y");
-            $month = (int) date("m");
-            $today = (int) date("d");
-        }
+        $year = $postData['year'];
+        $month = $postData['month'];
+        $today = $postData['today'];
 
         $params['year'] = $year;
         $params['month'] = $month;
@@ -79,7 +62,6 @@ class BookingController extends AbstractController
 
         $courts = $bookingInterface->getBookingsPerCourtAndDate($today, $month, $year, false);
         $params['courts'] = $courts;
-
 
         return $this->render('booking/search.html.twig', $params);
     }

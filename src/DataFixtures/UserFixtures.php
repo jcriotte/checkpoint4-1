@@ -11,6 +11,7 @@ class UserFixtures extends Fixture
 {
     private UserPasswordHasherInterface $passwordHasher;
     private const USERS = 30;
+    private const ADMIN = ['ROLE_ADMIN', 'admin@email.com', 'Admin', 'admin00'];
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
@@ -33,6 +34,17 @@ class UserFixtures extends Fixture
 
             $this->addReference("user_$i", $user);
         }
+
+        $admin = new User();
+        $admin->setRoles([self::ADMIN[0]]);
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, self::ADMIN[3]);
+        $admin->setPassword($hashedPassword);
+
+        $admin->setEmail(self::ADMIN[1]);
+        $admin->setPseudo(self::ADMIN[2]);
+
+        $manager->persist($admin);
 
         $manager->flush();
     }

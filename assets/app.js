@@ -96,8 +96,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 day: calendar.getDaySelected(),
             };
 
-            redirectPost('/booking/search', data);
+            const path = window.location.pathname;
+            if (path === '/admin/bookings') {
+                redirectPost('/admin/bookings', data);
+            }
+
+            if (path === '/booking/search') {
+                redirectPost('/booking/search', data);
+            }
         });
+    }
+
+    if (document.getElementsByClassName('admin-slot-hour')) {
+        const bookingSlots = document.getElementsByClassName('admin-slot-hour');
+
+        for (let i = 0; i < bookingSlots.length; i += 1) {
+            const modal = bookingSlots[i].nextElementSibling;
+            // eslint-disable-next-line operator-linebreak
+            const hideButton =
+                modal.getElementsByClassName('booking-modal-hide')[0];
+
+            bookingSlots[i].addEventListener('click', () => {
+                modal.classList.toggle('hidden');
+
+                hideButton.addEventListener('click', () => {
+                    modal.classList.toggle('hidden');
+                });
+            });
+        }
     }
 
     if (document.getElementsByClassName('profile-booking-button')) {

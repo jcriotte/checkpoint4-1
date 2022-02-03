@@ -19,7 +19,7 @@ class BookingFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $minDate = strtotime("today");
-        $maxDate = strtotime("22-02-15");
+        $maxDate = strtotime("22-02-27");
 
         $bookingRefs = [];
 

@@ -34,13 +34,6 @@ class BookingController extends AbstractController
         BookingInterface $bookingInterface,
         HandleBookingsSearch $searchHandler
     ): Response {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $user = $this->getUser();
-
-        if (!$user instanceof User) {
-            throw new Exception('User not authenticated');
-        }
 
         $params = [];
 
